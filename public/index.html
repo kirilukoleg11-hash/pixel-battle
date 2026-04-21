@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Battle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="500" height="500"></canvas>
+        </div>
+        
+        <div class="sidebar">
+            <h3>Color Palette</h3>
+            <div id="palette">
+                <div class="color-btn" style="background: #000000;" data-color="#000000"></div>
+                <div class="color-btn" style="background: #ffffff;" data-color="#ffffff"></div>
+                <div class="color-btn" style="background: #ff0000;" data-color="#ff0000"></div>
+                <div class="color-btn" style="background: #00ff00;" data-color="#00ff00"></div>
+                <div class="color-btn" style="background: #0000ff;" data-color="#0000ff"></div>
+                <div class="color-btn" style="background: #ffff00;" data-color="#ffff00"></div>
+                <div class="color-btn" style="background: #ff00ff;" data-color="#ff00ff"></div>
+                <div class="color-btn" style="background: #00ffff;" data-color="#00ffff"></div>
+            </div>
+
+            <div class="status-panel">
+                <h4>Текущий цвет:</h4>
+                <div id="currentColorDisplay" style="background: #000000;"></div>
+            </div>
+
+            <div class="cooldown-panel">
+                <h4>Статус:</h4>
+                <p id="cooldownText" class="ready">Готов рисовать!</p>
+            </div>
+            
+            <div class="stats">
+                <p>Размер: 100x100</p>
+                <p>Координаты: <span id="posDisplay">0, 0</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

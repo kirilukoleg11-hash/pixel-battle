@@ -1,0 +1,13 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+body { background-color: #1e2124; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.container { display: flex; gap: 20px; background: #282b30; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+.canvas-wrapper { border: 2px solid #424549; background: #fff; cursor: crosshair; }
+.sidebar { width: 250px; display: flex; flex-direction: column; gap: 20px; }
+#palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.color-btn { width: 100%; height: 40px; border-radius: 5px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+.color-btn:hover { transform: scale(1.1); }
+.color-btn.selected { border: 2px solid white; box-shadow: 0 0 10px white; }
+#currentColorDisplay { width: 50px; height: 50px; border-radius: 5px; border: 2px solid white; }
+.ready { color: #43b581; font-weight: bold; }
+.waiting { color: #f04747; font-weight: bold; }
+.stats p { color: #b9bbbe; font-size: 14px; margin-top: 5px; }
