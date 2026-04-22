@@ -9,62 +9,47 @@ const io = new Server(server);
 
 const GRID_SIZE = 100;
 
-// 1. СРАЗУ СОЗДАЕМ ПУСТОЙ ХОЛСТ (чтобы сервер не падал от undefined)
+// 1. Создаем пустой холст сразу
 let canvasData = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff'));
 
-// 2. ПОДКЛЮЧЕНИЕ К БАЗЕ (Замени ссылку на свою!)
-const mongoURI = "mongodb+srv://kirilukoleg110_db_user:oleg4432%2F@cluster0.4b7jsbj.mongodb.net/?appName=Cluster0";
+// 2. ТВОЯ ИСПРАВЛЕННАЯ ССЫЛКА (Без лишнего слэша и с твоим ID)
+const mongoURI = "mongodb+srv://kirilukoleg110_db_user:oleg4432@cluster0.4b7jsbj.mongodb.net/pixel_db?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(mongoURI)
     .then(() => {
-        console.log("✅ Успех: База данных MongoDB подключена!");
-        initCanvas(); // Загружаем данные только ПОСЛЕ подключения
+        console.log("✅ ПОБЕДА: База данных подключена успешно!");
+        initCanvas();
     })
-    .catch(err => console.error("❌ Ошибка подключения к базе:", err));
+    .catch(err => {
+        console.error("❌ ОШИБКА БАЗЫ:", err.message);
+    });
 
-// Описываем схему данных
-const CanvasModel = mongoose.model('Canvas', new mongoose.Schema({
-    data: Array
-}));
+const CanvasModel = mongoose.model('Canvas', new mongoose.Schema({ data: Array }));
 
-// Функция загрузки данных из облака
 async function initCanvas() {
     try {
         const saved = await CanvasModel.findOne();
         if (saved && saved.data) {
             canvasData = saved.data;
-            console.log("💾 Данные холста загружены из облака!");
+            console.log("💾 Данные из облака загружены на холст!");
         }
     } catch (err) {
-        console.error("⚠️ Не удалось загрузить данные, используем пустой холст");
+        console.error("⚠️ Ошибка загрузки данных");
     }
 }
 
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-    // Отправляем текущее состояние поля новому игроку
     socket.emit('init', canvasData);
-
-    // Когда игрок ставит пиксель
-    socket.on('placePixel', async (data) => {
-        const { x, y, color } = data;
-
-        // Проверяем, что координаты в границах и массив существует
+    socket.on('placePixel', async ({ x, y, color }) => {
         if (canvasData[x] && canvasData[x][y] !== undefined) {
             canvasData[x][y] = color;
-            
-            // Рассылаем всем игрокам
             io.emit('updatePixel', { x, y, color });
-
-            // Сохраняем в базу (без await, чтобы не тормозить игру)
-            CanvasModel.findOneAndUpdate({}, { data: canvasData }, { upsert: true }).catch(e => {});
+            CanvasModel.findOneAndUpdate({}, { data: canvasData }, { upsert: true }).catch(() => {});
         }
     });
 });
 
-// ПОРТ ДЛЯ RENDER
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`🚀 Сервер запущен на порту ${PORT}`);
-});
+server.listen(PORT, () => console.log(`🚀 Сервер на порту ${PORT}`));
