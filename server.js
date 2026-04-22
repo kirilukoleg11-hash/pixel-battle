@@ -13,7 +13,7 @@ const GRID_SIZE = 100;
 let canvasData = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill('#ffffff'));
 
 // 2. ПОДКЛЮЧЕНИЕ К БАЗЕ (Замени ссылку на свою!)
-const mongoURI = "mongodb+srv://kirilukoleg110_db_user:sqodPhppl2LMkbyx@cluster0.abcde.mongodb.net/pixel_db?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://kirilukoleg110_db_user:oleg4432%2F@cluster0.4b7jsbj.mongodb.net/?appName=Cluster0";
 
 mongoose.connect(mongoURI)
     .then(() => {
