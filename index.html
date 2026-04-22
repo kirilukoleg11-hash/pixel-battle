@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Battle Online</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        canvas {
+            background-color: #fff;
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            cursor: crosshair;
+            image-rendering: pixelated; /* Чтобы пиксели были четкими */
+        }
+        .controls {
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        input[type="color"] {
+            width: 50px;
+            height: 50px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Pixel Battle Online</h2>
+
+    <div class="controls">
+        <label>Выбери цвет:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <button onclick="location.reload()">Обновить страницу</button>
+    </div>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script src="script.js"></script>
+
+    <script>
+        // Небольшой кусочек кода, чтобы работал выбор цвета
+        const picker = document.getElementById('colorPicker');
+        picker.addEventListener('input', (e) => {
+            if (typeof currentColor !== 'undefined') {
+                currentColor = e.target.value;
+            }
+        });
+    </script>
+</body>
+</html>
